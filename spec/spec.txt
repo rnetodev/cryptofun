@@ -1,0 +1,41 @@
+Task 1: A list of cryptographic algorithms is shown below:
+
+DES
+3DES
+AES
+RSA
+
+In this task, the group is required to implement the cryptographic algorithms mentioned above, and to step-by-step (for
+each round) show and explain the changes happen to plaintext followed by the ciphertext after the first round. More
+specifically, each group is required to narrow down the functionality of cryptographic algorithms mentioned earlier
+using the provided plaintext below:
+
+
+“When the National Security Agency's invincible code-breaking machine encounters a mysterious code it cannot break, the
+agency calls its head cryptographer, Susan Fletcher, a brilliant and beautiful mathematician. What she uncovers sends
+shock waves through the corridors of power. The NSA is being held hostage... not by guns or bombs, but by a code so
+ingeniously complex that if released it would cripple U.S. intelligence.” (Digital Fortress, DAN Brown,
+2004)                                (4 * 10 = 40 marks)
+
+Task 2: Clearly, each cryptographic algorithm comes with a set of weaknesses and strengths. Therefore, the following
+shows a list of performance measures to evaluate the performance of each algorithm in this assignment:
+Encryption Time, Decryption Time, Memory Utilisation and the Avalanche Effect.
+
+You are required to quantitatively analyse and compare
+the performance of the aforementioned cryptographic algorithm using the given performance
+measures.
+(4 * 10 = 40 marks)
+
+
+Part 2                 (60 marks)
+In this part, you are required to complete the following tasks :
+
+Task 1: Choose one of the cryptographic algorithms mentioned above and determine the influential parameters on the
+Avalanche Effect. More specifically, you are required to conduct comprehensive research on the Avalanche Effect and the
+parameters that directly impact on the Avalanche Effect value for the chosen cryptographic
+algorithm.                                                                 (20 marks)
+
+Task 2:  You are also required to use the determined influential parameters in order to propose an approach to enhance
+the Avalanche Effect value for the chosen cryptographic algorithm. To successfully accomplish this task, you are
+required to implement your proposed approach, gather all data and evidently show that the proposed approach has
+improved the Avalanche Effect value.                                             (40 marks)
