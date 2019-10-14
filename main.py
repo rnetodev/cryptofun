@@ -8,9 +8,10 @@ import time
 import hexdump
 
 from ciphers.aes import AES
-from ciphers.des import triple_des as TRIPLE_DES
-from ciphers.des import des as DES
 from ciphers.des import PAD_PKCS5 as DES_PAD_PKCS5
+from ciphers.des import des as DES
+from ciphers.des import triple_des as TRIPLE_DES
+from ciphers.rsa import RSA
 
 # --
 # Globals
@@ -37,6 +38,11 @@ CIPHERS = {
         "init_kwargs": {"master_key": AES_KEY},
         "encrypt_kwargs": {"plaintext": TEXT.encode()},
     },
+    "rsa": {
+        "class": RSA,
+        "init_kwargs": {},
+        "encrypt_kwargs": {"plaintext": TEXT},
+    },
 }
 
 # --
@@ -44,6 +50,13 @@ CIPHERS = {
 # --
 def avalanche(a, b):
     return 100.0 - (SequenceMatcher(None, a, b).ratio() * 100)
+
+
+def output(instance, result):
+    if not hasattr(instance, "output"):
+        hexdump.hexdump(result)
+    else:
+        instance.output(result)
 
 
 # --
@@ -80,7 +93,7 @@ try:
     print("#--")
     print(f"# CIPHER: {CIPHER['class'].__name__}")
     print(f"# init_kwargs: {CIPHER['init_kwargs']}")
-    print(f"# encrypt_kwargs: {CIPHER['init_kwargs']}")
+    print(f"# encrypt_kwargs: {CIPHER['encrypt_kwargs']}")
     print("#--")
 
     instance = CIPHER["class"](**CIPHER["init_kwargs"])
@@ -107,7 +120,7 @@ try:
         else:
             print(f"-> Round {round + 1}")
 
-        hexdump.hexdump(encrypt_result)
+        output(instance, encrypt_result)
         print()
 
         last_encrypt_result = encrypt_result
@@ -115,8 +128,9 @@ try:
     end = time.time()
 
     print()
-    print(f"---> Encryption took {end-start:.2f} seconds, the final result is:")
-    hexdump.hexdump(encrypt_result)
+    print(f"---> Encryption took {end-start:.5f} seconds, the final result is:")
+    output(instance, last_encrypt_result)
+    print()
 
     # --
     # Decrypt process
@@ -130,19 +144,19 @@ try:
 
     for round, decrypt_result in enumerate(instance.decrypt(encrypt_result)):
         print(f"-> Round {round + 1}")
-        hexdump.hexdump(decrypt_result)
+        output(instance, decrypt_result)
         print()
 
     end = time.time()
 
     print()
-    print(f"---> Decryption took {end-start:.2f} seconds, the final result is:")
-    hexdump.hexdump(decrypt_result)
+    print(f"---> Decryption took {end-start:.5f} seconds, the final result is:")
+    output(instance, decrypt_result)
     print()
 
     print()
     print(
-        f"*** Total memory used {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024:.2f} mb"
+        f"*** Total memory used {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024:.3f} mb"
     )
 
 except Exception as e:
