@@ -1,22 +1,25 @@
 import argparse
 import binascii
 from difflib import SequenceMatcher
-import json
+import os
 import resource
 import time
 
-from ciphers.des import PAD_PKCS5 as DES_PAD_PKCS5
-from ciphers.des import des as DES
-from ciphers.des import triple_des as TRIPLE_DES
 import hexdump
+
+from ciphers.aes import AES
+from ciphers.des import triple_des as TRIPLE_DES
+from ciphers.des import des as DES
+from ciphers.des import PAD_PKCS5 as DES_PAD_PKCS5
 
 # --
 # Globals
 # --
 DES_KEY = binascii.unhexlify("133457799BBCDFF1")
 DES3_KEY = binascii.unhexlify("133457799BBCDFF1112233445566778877661100DD223311")
+AES_KEY = os.urandom(16)
 
-TEXT = "Simplicity is the ultimate sophistication."
+TEXT = "The secret is th"
 
 CIPHERS = {
     "des": {
@@ -28,6 +31,11 @@ CIPHERS = {
         "class": TRIPLE_DES,
         "init_kwargs": {"key": DES3_KEY, "padmode": DES_PAD_PKCS5},
         "encrypt_kwargs": {"data": TEXT},
+    },
+    "aes": {
+        "class": AES,
+        "init_kwargs": {"master_key": AES_KEY},
+        "encrypt_kwargs": {"plaintext": TEXT.encode()},
     },
 }
 
@@ -133,7 +141,9 @@ try:
     print()
 
     print()
-    print(f"*** Total memory used {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024:.2f} mb")
+    print(
+        f"*** Total memory used {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024:.2f} mb"
+    )
 
 except Exception as e:
     print("Something went wrong: ")
